@@ -154,9 +154,11 @@ public class JobController {
     public ModelAndView showEditForm(@PathVariable("id") long id) {
         ModelAndView modelAndView = new ModelAndView();
         Optional<Job> job = jobRepository.findById(id);
+        List<Skill> skills = skillRepository.findSkillsByJobId(id);
         if (job.isPresent()) {
             modelAndView.addObject("job", job.get());
-            modelAndView.setViewName("jobs/update_job");
+            modelAndView.addObject("skills", skills);
+            modelAndView.setViewName("jobs/update");
         } else {
             modelAndView.setViewName("redirect:/jobs?error=jobNotFound");
         }
@@ -166,9 +168,13 @@ public class JobController {
     @PostMapping("/update")
     public String updateJob(@ModelAttribute("job") Job job, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "jobs/update_job";
+            return "jobs/update";
         }
-        jobRepository.save(job);
+        Job existingJob = jobRepository.findById(job.getId())
+                .orElseThrow(() -> new RuntimeException("Job not found"));
+        existingJob.setJobName(job.getJobName());
+        existingJob.setJobDesc(job.getJobDesc());
+        jobRepository.save(existingJob);
         return "redirect:/jobs?success=updateSuccess";
     }
 
@@ -235,4 +241,6 @@ public class JobController {
         mav.addObject("jobs", jobs);
         return mav;
     }
+
+
 }

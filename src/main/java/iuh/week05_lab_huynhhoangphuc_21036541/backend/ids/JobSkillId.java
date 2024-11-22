@@ -21,7 +21,6 @@ public class JobSkillId extends Skill implements Serializable {
     @Column(name = "skill_id", nullable = false)
     private Long skillId;
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

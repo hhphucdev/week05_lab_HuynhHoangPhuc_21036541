@@ -34,4 +34,6 @@ public class JobSkill {
     @Enumerated(EnumType.ORDINAL)
     private SkillLevel skillLevel;
 
+
+
 }
