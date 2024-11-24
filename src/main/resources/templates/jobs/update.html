@@ -26,11 +26,6 @@
             z-index: 1000;
         }
 
-        header .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
         footer {
             background-color: #343a40;
             color: white;
@@ -52,6 +47,11 @@
             text-align: center;
             margin-bottom: 20px;
         }
+
+        .modal-body {
+            max-height: 400px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
@@ -69,6 +69,7 @@
                            placeholder="Enter job name" required>
                 </div>
             </div>
+
             <div class="mb-3 row">
                 <label for="jobDesc" class="col-sm-3 col-form-label">Job Description</label>
                 <div class="col-sm-9">
@@ -81,19 +82,42 @@
                 <label for="company" class="col-sm-3 col-form-label">Company</label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control" id="company" th:field="*{company.compName}"
-                           placeholder="Enter company name" required disabled>
+                           placeholder="Enter company name" disabled>
                 </div>
             </div>
 
+            <!-- Button to open modal -->
             <div class="mb-3 row">
-                <label for="skills" class="col-sm-3 col-form-label">Skills</label>
+                <label class="col-sm-3 col-form-label">Skills</label>
                 <div class="col-sm-9">
-                    <select class="form-select" id="skills" th:field="${skills}" required multiple>
-                        <option th:each="skill : ${skills}" th:value="${skill.id}" th:text="${skill.skillName}"></option>
-                    </select>
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#skillsModal">
+                        Select Skills
+                    </button>
+                    <div id="selectedSkills" class="mt-2"></div>
                 </div>
             </div>
 
+            <!-- Modal for skills selection -->
+            <div class="modal fade" id="skillsModal" tabindex="-1" aria-labelledby="skillsModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="skillsModalLabel">Select Skills</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-check" th:each="skill : ${allSkills}">
+                                <input class="form-check-input" type="checkbox" th:id="${'skill-' + skill.id}" th:value="${skill.id}"
+                                       name="skills" th:checked="${assignedSkillIds.contains(skill.id)}">
+                                <label class="form-check-label" th:for="${'skill-' + skill.id}" th:text="${skill.skillName}"></label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save Selection</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="d-grid gap-2 col-6 mx-auto">
                 <button class="btn btn-primary" type="submit">Update Job</button>

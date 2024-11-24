@@ -154,10 +154,13 @@ public class JobController {
     public ModelAndView showEditForm(@PathVariable("id") long id) {
         ModelAndView modelAndView = new ModelAndView();
         Optional<Job> job = jobRepository.findById(id);
-        List<Skill> skills = skillRepository.findSkillsByJobId(id);
+        List<Skill> allSkills = skillRepository.findAll();
+        List<Long> assignedSkillIds = jobSkillRepository.findSkillIdsByJobId(id);
+
         if (job.isPresent()) {
             modelAndView.addObject("job", job.get());
-            modelAndView.addObject("skills", skills);
+            modelAndView.addObject("allSkills", allSkills);
+            modelAndView.addObject("assignedSkillIds", assignedSkillIds);
             modelAndView.setViewName("jobs/update");
         } else {
             modelAndView.setViewName("redirect:/jobs?error=jobNotFound");
@@ -166,17 +169,31 @@ public class JobController {
     }
 
     @PostMapping("/update")
-    public String updateJob(@ModelAttribute("job") Job job, BindingResult result, Model model) {
+    public String updateJob(@ModelAttribute("job") Job job, @RequestParam("skills") List<Long> skillIds, BindingResult result) {
         if (result.hasErrors()) {
             return "jobs/update";
         }
         Job existingJob = jobRepository.findById(job.getId())
                 .orElseThrow(() -> new RuntimeException("Job not found"));
+
         existingJob.setJobName(job.getJobName());
         existingJob.setJobDesc(job.getJobDesc());
+
+        // Cập nhật các skill liên kết với job
+        jobSkillRepository.deleteByJobId(job.getId());
+        for (Long skillId : skillIds) {
+            JobSkill jobSkill = new JobSkill();
+            jobSkill.setJob(existingJob);
+            jobSkill.setSkill(skillRepository.findById(skillId).orElseThrow(() -> new RuntimeException("Skill not found")));
+            jobSkill.setId(new JobSkillId(existingJob.getId(), skillId));
+            jobSkill.setSkillLevel(SkillLevel.BEGINER);
+            jobSkillRepository.save(jobSkill);
+        }
+
         jobRepository.save(existingJob);
         return "redirect:/jobs?success=updateSuccess";
     }
+
 
     @GetMapping("/delete/{id}")
     public String deleteJob(@PathVariable("id") long id) {

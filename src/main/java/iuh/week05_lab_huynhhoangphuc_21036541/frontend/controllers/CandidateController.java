@@ -1,12 +1,10 @@
 package iuh.week05_lab_huynhhoangphuc_21036541.frontend.controllers;
 
 import com.neovisionaries.i18n.CountryCode;
-import iuh.week05_lab_huynhhoangphuc_21036541.backend.models.Address;
-import iuh.week05_lab_huynhhoangphuc_21036541.backend.models.Candidate;
-import iuh.week05_lab_huynhhoangphuc_21036541.backend.models.Company;
-import iuh.week05_lab_huynhhoangphuc_21036541.backend.models.Job;
+import iuh.week05_lab_huynhhoangphuc_21036541.backend.models.*;
 import iuh.week05_lab_huynhhoangphuc_21036541.backend.repositories.AddressRepository;
 import iuh.week05_lab_huynhhoangphuc_21036541.backend.repositories.CandidateRepository;
+import iuh.week05_lab_huynhhoangphuc_21036541.backend.repositories.SkillRepository;
 import iuh.week05_lab_huynhhoangphuc_21036541.backend.services.CandidateServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,8 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -33,6 +33,10 @@ public class CandidateController {
     private CandidateServices candidateServices;
     @Autowired
     private AddressRepository addressRepository;
+    @Autowired
+    private SkillRepository skillRepository;
+
+
 
     @GetMapping("/list")
     public String showCandidateList(Model model) {
@@ -72,6 +76,10 @@ public class CandidateController {
         modelAndView.addObject("candidate", candidate);
         modelAndView.addObject("address", candidate.getAddress());
         modelAndView.addObject("countries", CountryCode.values());
+
+        List<Skill> allSkills = skillRepository.findAll();
+        modelAndView.addObject("allSkills", allSkills);
+
         modelAndView.setViewName("candidates/add");
         return modelAndView;
     }
@@ -79,18 +87,38 @@ public class CandidateController {
     @PostMapping("/candidates/add")
     public String addCandidate(
             @ModelAttribute("candidate") Candidate candidate,
-            BindingResult result, Model model) {
+            @RequestParam(value = "skills", required = false) List<Long> skillIds,
+            BindingResult result,
+            Model model) {
 
         if (result.hasErrors()) {
             model.addAttribute("countries", CountryCode.values());
+            model.addAttribute("allSkills", skillRepository.findAll());
             return "candidates/add";
         }
 
         addressRepository.save(candidate.getAddress());
+
+        if (skillIds != null && !skillIds.isEmpty()) {
+            Set<CandidateSkill> candidateSkills = new LinkedHashSet<>();
+            for (Long skillId : skillIds) {
+                Skill skill = skillRepository.findById(skillId).orElse(null);
+                if (skill != null) {
+                    CandidateSkill candidateSkill = new CandidateSkill();
+                    candidateSkill.setCan(candidate);
+                    candidateSkill.setSkill(skill);
+                    candidateSkills.add(candidateSkill);
+                }
+            }
+            candidate.setCandidateSkills(candidateSkills);
+        }
+
         candidateRepository.save(candidate);
 
         return "redirect:/candidates";
     }
+
+
 
     @GetMapping("/show-edit-form/{id}")
     public ModelAndView edit(@PathVariable("id") long id) {
