@@ -119,12 +119,13 @@
 <header th:replace="fragment/header :: header"></header>
 
 <div class="container mt-5">
-    <h1 class="title">List of Companies</h1>
+    <h1 class="title">Companies</h1>
     <a class="btn btn-primary" href="/">Back to Home</a>
 
     <form class="d-flex mb-4" method="get" action="/companies/search">
         <input class="form-control me-2" type="search" name="keyword" placeholder="Search companies..." aria-label="Search" th:value="${keyword}">
         <button class="btn btn-outline-success" type="submit">Search</button>
+        <button class="btn btn-outline-secondary" type="button" onclick="window.location.href='/companies'">Clear</button>
     </form>
 
 

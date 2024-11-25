@@ -119,7 +119,6 @@ public class CandidateController {
     }
 
 
-
     @GetMapping("/show-edit-form/{id}")
     public ModelAndView edit(@PathVariable("id") long id) {
         ModelAndView modelAndView = new ModelAndView();
@@ -199,7 +198,6 @@ public class CandidateController {
         model.addAttribute("pageNumbers", IntStream.rangeClosed(1, candidatePage.getTotalPages()).boxed().collect(Collectors.toList()));
         return "candidates/list";
     }
-
 
     @GetMapping("/suggest-jobs/{id}")
     public String suggestJobs(@PathVariable("id") Long candidateId, Model model) {

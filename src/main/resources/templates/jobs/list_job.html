@@ -121,13 +121,13 @@
 
 <div class="container mt-5">
 
-    <h1 class="title">List of Jobs</h1>
+    <h1 class="title">Jobs</h1>
     <a class="btn btn-primary" href="/">Back to Home</a>
     <form th:action="@{/jobs}" method="get" class="mb-4">
         <div class="input-group">
             <input type="text" class="form-control" name="search" placeholder="Search by company, skill, or job name"
                    th:value="${search}">
-            <button class="btn btn-outline-secondary" type="submit">Search</button>
+            <button class="btn btn-outline-success" type="submit">Search</button>
             <button class="btn btn-outline-secondary" type="button" onclick="window.location.href='/jobs'">Clear
             </button>
         </div>
@@ -141,7 +141,7 @@
             <th>Company</th>
             <th>Skills</th>
             <th>View Company</th>
-            <th>Update</th>
+            <th>Edit</th>
             <th>Apply</th>
         </tr>
         </thead>
@@ -162,7 +162,7 @@
                 </ul>
             </td>
             <td><a class="btn btn-warning btn-sm" th:href="@{/jobs/view/{id}(id=${job.company.id})}">View</a></td>
-            <td><a class="btn btn-info btn-sm" th:href="@{/jobs/show-edit-form/{id}(id=${job.id})}">Update</a></td>
+            <td><a class="btn btn-info btn-sm" th:href="@{/jobs/show-edit-form/{id}(id=${job.id})}">Edit</a></td>
             <td><a class="btn btn-add btn-sm" th:href="@{/jobs/apply/{id}(id=${job.id})}">Apply</a></td>
         </tr>
         </tbody>
