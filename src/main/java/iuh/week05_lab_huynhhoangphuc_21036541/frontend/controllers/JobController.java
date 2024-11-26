@@ -259,5 +259,20 @@ public class JobController {
         return mav;
     }
 
+    // view_detail_job
+    @GetMapping("/view_detail_job/{id}")
+    public ModelAndView viewJob(@PathVariable("id") long id) {
+        ModelAndView modelAndView = new ModelAndView();
+        Optional<Job> job = jobRepository.findById(id);
+        if (job.isPresent()) {
+            Job job1 = job.get();
+            modelAndView.addObject("job", job1);
+            modelAndView.setViewName("jobs/view_detail_job");
+        } else {
+            modelAndView.setViewName("redirect:/jobs?error=jobNotFound");
+        }
+        return modelAndView;
+    }
+
 
 }

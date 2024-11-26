@@ -82,14 +82,16 @@
 <header th:replace="fragment/header :: header"></header>
 <div class="container">
     <h1 class="title">Company Details</h1>
+    <a class="btn btn-primary mb-4" href="/jobs">Back to Jobs</a>
     <div class="card">
         <div class="card-header">
             Company Information
         </div>
+
         <div class="card-body">
             <h5 class="card-title" th:text="${company.compName}"></h5>
             <p class="card-text"><strong>Id:</strong> <span th:text="${company.id}"></span></p>
-            <p class="card-text"><strong>Address:</strong> <span th:text="${company.address}"></span></p>
+            <p class="card-text"><strong>Address:</strong> <span th:text="${company.address.fullAddress}"></span></p>
             <p class="card-text"><strong>Phone:</strong> <span th:text="${company.phone}"></span></p>
             <p class="card-text"><strong>Email:</strong> <span th:text="${company.email}"></span></p>
         </div>
