@@ -255,7 +255,10 @@ public class JobController {
     public ModelAndView viewJobsBySkill(@PathVariable("id") long skillId) {
         ModelAndView mav = new ModelAndView("jobs/view_job_by_skill");
         List<Job> jobs = jobRepository.findJobsBySkillName(skillId);
+        Skill skill = skillRepository.findById(skillId)
+                .orElseThrow(() -> new RuntimeException("Skill not found"));
         mav.addObject("jobs", jobs);
+        mav.addObject("skillName", skill.getSkillName());
         return mav;
     }
 
