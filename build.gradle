@@ -43,6 +43,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.modelmapper:modelmapper:3.1.0'
     //for country code
     implementation 'com.neovisionaries:nv-i18n:1.29'
     //For database REST
