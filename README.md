@@ -71,6 +71,10 @@ Job Finder là một ứng dụng web được phát triển nhằm kết nối 
 
 ![Sodo_Database_Diagram.png](assets/Sodo_Database_Diagram.png)
 
+### 📊 Sơ Đồ Class Diagram
+
+![Sodo_Class Diagram.png](assets/Sodo_Class%20Diagram.png)
+
 ---
 
 ## 🚀 Giao Diện Ứng Dụng
