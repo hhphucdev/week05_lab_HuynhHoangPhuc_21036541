@@ -4,6 +4,7 @@
 ---
 
 **Lớp học phần:** 420300362101  
+**Môn học:** Lập trình www(Java)   
 **Giảng viên hướng dẫn:** Võ Văn Hải  
 **Sinh viên thực hiện:** Huỳnh Hoàng Phúc  
 **MSSV:** 21036541
@@ -11,7 +12,7 @@
 
 ## 📚 Tài Liệu Báo Cáo
 - Word: [21036541_HuynhHoangPhuc_Report.docx](document/21036541_HuynhHoangPhuc_Report.docx)
-- PowerPoint: [Slides Job Finder.pptx](Slides Job Finder.pptx)
+- PowerPoint: [21036541_HuynhHoangPhuc_PPT.pptx](document/21036541_HuynhHoangPhuc_PPT.pptx)
 
 ---
 # Job Finder
