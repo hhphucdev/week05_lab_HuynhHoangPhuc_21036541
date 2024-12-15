@@ -225,6 +225,9 @@ Job Finder là một ứng dụng web được phát triển nhằm kết nối 
 
 ![GiaoDien_Thongtinchitiet_Companies.png](assets/GiaoDien_Thongtinchitiet_Companies.png)
 
+**📄 Mail gửi đến các ứng cử viên phù hợp**
+
+![Gui_Mail.png](assets/Gui_Mail.png)
 
 ## 📌 Định Hướng Phát Triển
 
